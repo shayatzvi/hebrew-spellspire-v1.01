@@ -7,15 +7,35 @@
     <link rel="stylesheet" href="homepage.css">
     <!-- Add Font Awesome for GitHub icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Add Netlify Identity Widget -->
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
     <div class="homepage-container">
         <header>
             <div class="header-content">
                 <h1>Hebrew Spell Tower</h1>
-                <a href="https://github.com/shayatzvi/hebrew-spellspire-v1.01/releases/tag/game" class="github-button" target="_blank" title="View on GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
+                <div class="header-buttons">
+                    <a href="https://github.com/shayatzvi/hebrew-spellspire-v1.01/releases/tag/game" class="github-button" target="_blank" title="View on GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <div class="auth-buttons">
+                        <div id="login-section">
+                            <button id="login-button" class="auth-button" onclick="netlifyIdentity.open();">
+                                <i class="fas fa-user"></i> Login
+                            </button>
+                        </div>
+                        <div id="user-section" style="display:none;">
+                            <button id="user-button" class="auth-button user-button">
+                                <i class="fas fa-user-circle"></i> <span id="user-name">User</span>
+                            </button>
+                            <div id="user-menu" class="user-menu">
+                                <div id="show-scores" class="menu-item">My Scores</div>
+                                <div id="logout" class="menu-item" onclick="netlifyIdentity.logout();">Logout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <p class="tagline">Learn Hebrew through magical word battles!</p>
         </header>
@@ -76,6 +96,19 @@
         <footer>
             <p>&copy; 2025 Hebrew Spell Tower</p>
         </footer>
+
+        <!-- Add a user scores modal -->
+        <div id="scores-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Your Progress</h2>
+                <div id="user-scores-container">
+                    <div class="loading">Loading your progress...</div>
+                </div>
+            </div>
+        </div>
+
+        <script src="auth.js"></script>
     </div>
 </body>
 </html>
