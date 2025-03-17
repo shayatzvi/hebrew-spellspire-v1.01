@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            // First, try to get scores from localStorage
+            // Get scores from localStorage
             const localScores = JSON.parse(localStorage.getItem('hebrewSpellTowerScores') || '{}');
             
             // Here you would normally also check a database via Netlify Functions
@@ -102,12 +102,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            // Format the data for display
+            const formattedScores = [];
+            
+            for (const version in localScores) {
+                const versionData = localScores[version];
+                
+                // Format version name for display
+                let displayVersion = version.charAt(0).toUpperCase() + version.slice(1);
+                
+                // Add game data to the array
+                formattedScores.push({
+                    version: displayVersion,
+                    level: versionData.level,
+                    score: versionData.score,
+                    wordsLearned: versionData.wordsLearned,
+                    lastPlayed: new Date(versionData.lastPlayed).toLocaleDateString()
+                });
+            }
+            
+            // Sort by last played date (most recent first)
+            formattedScores.sort((a, b) => {
+                return new Date(b.lastPlayed) - new Date(a.lastPlayed);
+            });
+            
             // Render scores table
             let html = `
                 <table class="progress-table">
                     <thead>
                         <tr>
-                            <th>Topic</th>
+                            <th>Game Version</th>
                             <th>Level</th>
                             <th>Score</th>
                             <th>Words Learned</th>
@@ -117,18 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     <tbody>
             `;
             
-            for (const topic in localScores) {
-                const gameData = localScores[topic];
+            formattedScores.forEach(score => {
                 html += `
                     <tr>
-                        <td>${topic}</td>
-                        <td>${gameData.level}</td>
-                        <td class="highlight">${gameData.score}</td>
-                        <td>${gameData.wordsLearned} words</td>
-                        <td>${new Date(gameData.lastPlayed).toLocaleDateString()}</td>
+                        <td>${score.version}</td>
+                        <td>${score.level}</td>
+                        <td class="highlight">${score.score}</td>
+                        <td>${score.wordsLearned} words</td>
+                        <td>${score.lastPlayed}</td>
                     </tr>
                 `;
-            }
+            });
             
             html += `
                     </tbody>

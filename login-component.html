@@ -1,0 +1,94 @@
+<div class="login-container">
+    <div id="game-login-section">
+        <button id="game-login-button" class="game-auth-button" onclick="netlifyIdentity.open();">
+            <i class="fas fa-user"></i> Login to Save Progress
+        </button>
+    </div>
+    <div id="game-user-section" style="display:none;">
+        <span id="game-user-name">User</span>
+        <button id="game-logout-button" class="game-auth-button" onclick="netlifyIdentity.logout();">
+            Logout
+        </button>
+    </div>
+</div>
+
+<style>
+.login-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.game-auth-button {
+    background-color: rgba(22, 33, 62, 0.8);
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.game-auth-button:hover {
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+#game-user-name {
+    color: #ffd700;
+    margin-right: 10px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const gameLoginSection = document.getElementById('game-login-section');
+    const gameUserSection = document.getElementById('game-user-section');
+    const gameUserName = document.getElementById('game-user-name');
+    
+    // Initialize Netlify Identity
+    netlifyIdentity.on('init', user => {
+        if (user) {
+            showLoggedInState(user);
+        }
+    });
+    
+    // Handle login
+    netlifyIdentity.on('login', user => {
+        showLoggedInState(user);
+        netlifyIdentity.close();
+        
+        // Save user to localStorage
+        localStorage.setItem('hebrewSpellTowerUser', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            fullName: user.user_metadata.full_name || user.email.split('@')[0]
+        }));
+        
+        // Reload to apply login state to game
+        window.location.reload();
+    });
+    
+    // Handle logout
+    netlifyIdentity.on('logout', () => {
+        gameLoginSection.style.display = 'block';
+        gameUserSection.style.display = 'none';
+        
+        // Remove user from localStorage
+        localStorage.removeItem('hebrewSpellTowerUser');
+        
+        // Reload to apply logout state to game
+        window.location.reload();
+    });
+    
+    function showLoggedInState(user) {
+        gameLoginSection.style.display = 'none';
+        gameUserSection.style.display = 'block';
+        
+        // Display user name
+        const displayName = user.user_metadata.full_name || user.email.split('@')[0];
+        gameUserName.textContent = displayName;
+    }
+});
+</script> 

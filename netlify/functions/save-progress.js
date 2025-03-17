@@ -11,25 +11,36 @@ exports.handler = async function(event, context) {
     try {
         // Parse the incoming data
         const data = JSON.parse(event.body);
-        const { gameMode, progress } = data;
+        const { userId, gameVersion, progress } = data;
         
-        // Here, you would typically save to a database
-        // For example, using Fauna DB, MongoDB, etc.
-        // This is just a placeholder response
+        // Validate that the requesting user matches the user ID in the data
+        if (user.sub !== userId) {
+            return {
+                statusCode: 403,
+                body: JSON.stringify({ message: "Forbidden: User ID mismatch" })
+            };
+        }
         
+        // Here, you would save to a database
+        // For example, using FaunaDB, Firebase, or another database service
+        
+        // For now, just return success
         return {
             statusCode: 200,
             body: JSON.stringify({ 
                 message: "Progress saved successfully",
-                userId: user.sub,
-                gameMode,
-                progress
+                userId,
+                gameVersion,
+                timestamp: new Date().toISOString()
             })
         };
     } catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: "Error saving progress", error: error.message })
+            body: JSON.stringify({ 
+                message: "Error saving progress", 
+                error: error.message 
+            })
         };
     }
 }; 
