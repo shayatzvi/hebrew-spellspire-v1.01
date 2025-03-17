@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hebrew Spell Tower - Learn Hebrew Through Play</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Hebrew Spell Tower (Classic)</h1>
+            <div class="score-container">
+                <span>Score: </span>
+                <span id="score">0</span>
+            </div>
+            <div class="level-container">
+                <span>Level: </span>
+                <span id="level">1</span>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="enemy-container">
+                <div class="enemy-health-bar">
+                    <div id="enemy-health" class="health-fill"></div>
+                </div>
+                <div id="enemy" class="enemy"></div>
+                <div id="damage-text" class="damage-text"></div>
+            </div>
+
+            <div class="spell-display">
+                <div id="current-word" class="current-word"></div>
+                <div id="word-translation" class="word-translation"></div>
+                <div id="word-pronunciation" class="word-pronunciation"></div>
+                <button id="cast-spell" class="cast-button">Cast Spell</button>
+                <button id="clear-word" class="clear-button">Clear Word</button>
+                <button id="backspace-button" class="backspace-button">⌫</button>
+            </div>
+
+            <div id="letters-tray" class="letters-tray"></div>
+        </div>
+
+        <div class="game-info">
+            <div id="game-message" class="game-message"></div>
+            <div id="hint-container" class="hint-container">
+                <button id="show-hint" class="hint-button">Show Hint</button>
+                <div id="hint-text" class="hint-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to Hebrew Spell Tower!</h2>
+            <p>Learn Hebrew while defeating monsters with your spelling skills!</p>
+            <div class="tutorial-steps">
+                <div class="tutorial-step">
+                    <h3>1. Select Hebrew Letters</h3>
+                    <p>Click on the Hebrew letters to form words.</p>
+                </div>
+                <div class="tutorial-step">
+                    <h3>2. Cast Your Spell</h3>
+                    <p>Click "Cast Spell" to attack the monster.</p>
+                </div>
+                <div class="tutorial-step">
+                    <h3>3. Goblin Health Bar</h3>
+                    <p>The red bar on the top, represents the beasts health. Once depleted, the goblin will be defeated and you will advance to the next beast.</p>
+                </div>
+                <div class="tutorial-step">
+                    <h3>4. Learn New Words</h3>
+                    <p>Each valid word shows its English translation and pronunciation.</p>
+                </div>
+            </div>
+            <button id="start-game">Start Learning!</button>
+        </div>
+    </div>
+
+    <div id="level-complete" class="modal">
+        <div class="modal-content">
+            <h2>Level Complete!</h2>
+            <p>Great job! You've learned <span id="words-learned">0</span> Hebrew words!</p>
+            <div id="level-words-summary" class="words-summary"></div>
+            <button id="next-level">Continue to Next Level</button>
+        </div>
+    </div>
+
+    <div id="word-discovered" class="modal">
+        <div class="modal-content">
+            <h2>New Word Discovered!</h2>
+            <div id="discovered-word" class="discovered-word"></div>
+            <div id="discovered-translation" class="discovered-translation"></div>
+            <div id="discovered-pronunciation" class="discovered-pronunciation"></div>
+            <button id="continue-game">Continue</button>
+        </div>
+    </div>
+
+    <div id="game-over" class="modal">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p>Your final score: <span id="final-score">0</span></p>
+            <p>Words learned: <span id="total-words-learned">0</span></p>
+            <div id="learned-words-list" class="learned-words-list"></div>
+            <button id="restart-game">Play Again</button>
+        </div>
+    </div>
+
+    <script src="hebrew-words.js"></script>
+    <script src="game.js"></script>
+    <footer><p>Made by shaya with the help of AI <a href="https://github.com/shayatzvi">Github</a></p></footer>
+</body>
+</html> 
