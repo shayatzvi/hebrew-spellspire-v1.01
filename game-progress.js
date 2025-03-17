@@ -1,95 +1,101 @@
-// Game Progress Manager for Hebrew Spell Tower
-const GameProgressManager = {
+// Simple game progress manager
+const GameProgress = {
+    // Get the logged in user
+    getUser: function() {
+        try {
+            return JSON.parse(localStorage.getItem('hebrewSpellTowerUser'));
+        } catch (e) {
+            console.error("Error getting user:", e);
+            return null;
+        }
+    },
+    
     // Check if user is logged in
-    isUserLoggedIn: function() {
-        const currentUser = JSON.parse(localStorage.getItem('hebrewSpellTowerUser'));
-        return !!currentUser;
+    isLoggedIn: function() {
+        return !!this.getUser();
     },
     
-    // Get current user info
-    getCurrentUser: function() {
-        return JSON.parse(localStorage.getItem('hebrewSpellTowerUser'));
-    },
-    
-    // Determine the game version from the path
+    // Get the game version from the URL path
     getGameVersion: function() {
         const path = window.location.pathname;
         
-        // Extract version from path
         if (path.includes('/versions/')) {
-            const versionMatch = path.match(/\/versions\/([^/]+)/);
-            if (versionMatch && versionMatch[1]) {
-                return versionMatch[1].toLowerCase();
+            const parts = path.split('/');
+            const versionIndex = parts.indexOf('versions') + 1;
+            
+            if (versionIndex < parts.length) {
+                return parts[versionIndex];
             }
         }
         
-        // Fallback to 'classic' if version can't be determined
         return 'classic';
     },
     
     // Save game progress
-    saveProgress: function(gameState) {
-        if (!this.isUserLoggedIn()) return;
+    saveProgress: function(level, score, wordsLearned) {
+        const user = this.getUser();
+        if (!user) return false;
         
         const gameVersion = this.getGameVersion();
-        const userId = this.getCurrentUser().id;
+        console.log(`Saving progress for ${gameVersion}: Level ${level}, Score ${score}`);
         
-        // Get existing scores
-        const savedScores = JSON.parse(localStorage.getItem('hebrewSpellTowerScores') || '{}');
-        
-        // Update with current game progress
-        savedScores[gameVersion] = {
-            level: gameState.level,
-            score: gameState.score,
-            wordsLearned: gameState.discoveredWords.length,
-            lastPlayed: new Date().toISOString()
-        };
-        
-        // Save back to localStorage
-        localStorage.setItem('hebrewSpellTowerScores', JSON.stringify(savedScores));
-        
-        // In a real implementation, you would also save to a database via Netlify Functions
-        this.syncWithServer(userId, gameVersion, savedScores[gameVersion]);
-    },
-    
-    // Load game progress for the current version
-    loadProgress: function() {
-        if (!this.isUserLoggedIn()) return false;
-        
-        const gameVersion = this.getGameVersion();
-        
-        // Get existing scores
-        const savedScores = JSON.parse(localStorage.getItem('hebrewSpellTowerScores') || '{}');
-        
-        if (savedScores[gameVersion]) {
-            // Found saved progress for this game version
-            return savedScores[gameVersion];
+        try {
+            // Get existing scores
+            let allScores = {};
+            try {
+                const existingData = localStorage.getItem('hebrewSpellTowerScores');
+                if (existingData) {
+                    allScores = JSON.parse(existingData);
+                }
+            } catch (e) {
+                console.error("Error parsing existing scores:", e);
+            }
+            
+            // Update scores for this version
+            allScores[gameVersion] = {
+                level: level,
+                score: score,
+                wordsLearned: wordsLearned,
+                lastPlayed: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('hebrewSpellTowerScores', JSON.stringify(allScores));
+            return true;
+        } catch (e) {
+            console.error("Error saving progress:", e);
+            return false;
         }
-        
-        return false;
     },
     
-    // Sync with server via Netlify Function
-    syncWithServer: function(userId, gameVersion, progress) {
-        // This is a placeholder for the server sync functionality
-        // In a real implementation, you would call a Netlify Function here
+    // Load game progress
+    loadProgress: function() {
+        const user = this.getUser();
+        if (!user) return null;
         
-        // Example:
-        /*
-        fetch('/.netlify/functions/save-progress', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userId: userId,
-                gameVersion: gameVersion,
-                progress: progress
-            })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Progress synced with server:', data))
-        .catch(error => console.error('Error syncing progress:', error));
-        */
+        const gameVersion = this.getGameVersion();
+        console.log(`Loading progress for ${gameVersion}`);
+        
+        try {
+            const allScores = JSON.parse(localStorage.getItem('hebrewSpellTowerScores') || '{}');
+            return allScores[gameVersion] || null;
+        } catch (e) {
+            console.error("Error loading progress:", e);
+            return null;
+        }
+    },
+    
+    // Display progress in console (for debugging)
+    debugProgress: function() {
+        try {
+            const allScores = JSON.parse(localStorage.getItem('hebrewSpellTowerScores') || '{}');
+            console.log("All saved progress:", allScores);
+        } catch (e) {
+            console.error("Error debugging progress:", e);
+        }
     }
-}; 
+};
+
+// Debug on load
+console.log("Game Progress Manager loaded");
+GameProgress.debugProgress(); 
