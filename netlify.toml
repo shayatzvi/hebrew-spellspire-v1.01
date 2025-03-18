@@ -1,5 +1,5 @@
 [build]
-  publish = "."  # Adjust this to your publish directory if different
+  publish = "."  # Adjust this to your publish directory
 
 # Ensure Netlify Forms are properly processed
 [build.processing]
