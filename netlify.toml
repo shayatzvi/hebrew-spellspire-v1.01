@@ -1,0 +1,9 @@
+[build]
+  publish = "."  # Adjust this to your publish directory if different
+
+# Ensure Netlify Forms are properly processed
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true 

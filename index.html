@@ -8,7 +8,7 @@
     <!-- Add Font Awesome for GitHub icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Add Netlify Identity Widget -->
-    
+    <script src="word-form-modal.js"></script>
 </head>
 <body>
     <div class="homepage-container">
@@ -78,6 +78,15 @@
             </div>
         </section>
 
+        <section class="contribute-section">
+            <h2>Help Improve the Game</h2>
+            <p>Know Hebrew words that should be in the game? Help us expand our dictionary!</p>
+            <a href="contribute.html" class="contribute-button">
+                <div class="button-icon">📝</div>
+                <div class="button-text">Contribute Words</div>
+            </a>
+        </section>
+
         <footer>
             <p>&copy; 2025 Hebrew Spell Tower</p>
         </footer>
@@ -128,7 +137,25 @@
                 // Reload page to update UI
                 window.location.reload();
             });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Create the modal and get the open function
+                const openWordFormModal = createWordFormModal();
+                
+                // Add click event to the contribute button
+                document.getElementById('openWordFormButton').addEventListener('click', openWordFormModal);
+            });
         </script>
     </div>
+
+    <!-- Add this after the opening <body> tag -->
+    <form name="hebrew-word-contribution" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="hebrewWord" />
+        <input type="text" name="englishTranslation" />
+        <input type="text" name="pronunciation" />
+        <input type="text" name="category" />
+        <select name="gameVersion"></select>
+        <textarea name="notes"></textarea>
+    </form>
 </body>
 </html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contribute Words - Hebrew Spell Tower</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .form-container {
+            background-color: #16213e;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #0d1b2a;
+            background-color: #1f3a5f;
+            color: white;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #ffd700;
+            color: #0d1b2a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #ffec80;
+        }
+
+        .info-text {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #8ab4f8;
+        }
+
+        .success-message {
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #1f3a5f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #2a4c7a;
+        }
+    </style>
+</head>
+<body>
+    <div class="homepage-container">
+        <header>
+            <div class="header-content">
+                <h1>Hebrew Spell Tower</h1>
+                <a href="https://github.com/yourusername/hebrew-spell-tower" class="github-button" target="_blank" title="View on GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p class="tagline">Contribute Hebrew Words</p>
+        </header>
+
+        <div class="form-container">
+            <div id="successMessage" class="success-message">
+                Thank you for your contribution! Your word has been submitted for review.
+            </div>
+            <div id="errorMessage" class="error-message">
+                There was an error submitting your word. Please try again.
+            </div>
+
+            <form name="hebrew-word-contribution" netlify">
+                <input type="hidden" name="form-name" value="hebrew-word-contribution">
+                
+                <div class="form-group">
+                    <label for="hebrewWord">Hebrew Word*</label>
+                    <input type="text" id="hebrewWord" name="hebrewWord" required>
+                    <p class="info-text">Enter the Hebrew word without vowel points (nikud) MUST BE IN HEBREW TYPE</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="englishTranslation">English Translation*</label>
+                    <input type="text" id="englishTranslation" name="englishTranslation" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pronunciation">Pronunciation Guide</label>
+                    <input type="text" id="pronunciation" name="pronunciation">
+                    <p class="info-text">How to pronounce the word using English letters (e.g. "sha-lom")</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category">
+                    <p class="info-text">E.g. food, animals, holidays, etc.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gameVersion">Game Version*</label>
+                    <select id="gameVersion" name="gameVersion" required>
+                        <option value="all">All Versions</option>
+                        <option value="classic">Classic</option>
+                        <option value="passover">Passover</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address (optional)</label>
+                    <input type="text" id="email" name="emails" >
+                    <p class="info-text">In case we need to ask you a question</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional Notes</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">Submit Word</button>
+            </form>
+        </div>
+
+        <a href="index.html" class="home-button">Return to Home</a>
+
+        <footer>
+            <p>&copy; Hebrew Spell Tower</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form[name="hebrew-word-contribution"]');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check for success query parameter (for redirect after form submission)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                successMessage.style.display = 'block';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Validate Hebrew input on form submission
+            form.addEventListener('submit', function(e) {
+                const hebrewWord = document.getElementById('hebrewWord').value.trim();
+                
+                // Check if the text contains at least one Hebrew character
+                const hebrewRegex = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
+                
+                if (!hebrewRegex.test(hebrewWord)) {
+                    e.preventDefault();
+                    errorMessage.textContent = "Please enter a valid Hebrew word (using Hebrew characters)";
+                    errorMessage.style.display = 'block';
+                    
+                    // Hide error message after 5 seconds
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 5000);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

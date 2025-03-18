@@ -353,3 +353,39 @@ footer {
         margin-bottom: 10px;
     }
 }
+
+/* Contribute section styles */
+.contribute-section {
+    background-color: #16213e;
+    border-radius: 10px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.contribute-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #1f3a5f;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.contribute-button:hover {
+    background-color: #2a4c7a;
+    transform: translateY(-2px);
+}
+
+.contribute-button .button-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.contribute-button .button-text {
+    font-weight: bold;
+}
