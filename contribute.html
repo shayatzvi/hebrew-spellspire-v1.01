@@ -104,15 +104,9 @@
             <p class="tagline">Contribute Hebrew Words</p>
         </header>
 
-        <div class="form-container">
-            <div id="successMessage" class="success-message">
-                Thank you for your contribution! Your word has been submitted for review.
-            </div>
-            <div id="errorMessage" class="error-message">
-                There was an error submitting your word. Please try again.
-            </div>
+        
 
-            <form name="hebrew-word-contribution" netlify">
+            <form name="hebrew-word-contribution" action="success.html" netlify">
                 <input type="hidden" name="form-name" value="hebrew-word-contribution">
                 
                 <div class="form-group">
@@ -168,42 +162,6 @@
         </footer>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form[name="hebrew-word-contribution"]');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Check for success query parameter (for redirect after form submission)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('success') === 'true') {
-                successMessage.style.display = 'block';
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 5000);
-            }
-            
-            // Validate Hebrew input on form submission
-            form.addEventListener('submit', function(e) {
-                const hebrewWord = document.getElementById('hebrewWord').value.trim();
-                
-                // Check if the text contains at least one Hebrew character
-                const hebrewRegex = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
-                
-                if (!hebrewRegex.test(hebrewWord)) {
-                    e.preventDefault();
-                    errorMessage.textContent = "Please enter a valid Hebrew word (using Hebrew characters)";
-                    errorMessage.style.display = 'block';
-                    
-                    // Hide error message after 5 seconds
-                    setTimeout(() => {
-                        errorMessage.style.display = 'none';
-                    }, 5000);
-                }
-            });
-        });
-    </script>
+   
 </body>
 </html> 
